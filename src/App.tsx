@@ -35,7 +35,7 @@ function App() {
     <>
       {session ? (
         <>
-          <button onClick={logout}> Log Out</button>
+          <button className="submit-btn" onClick={logout}> Log Out</button>
           <TaskManager session={session} />
         </>
       ) : (

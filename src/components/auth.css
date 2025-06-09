@@ -1,0 +1,125 @@
+/* Auth Component Styles */
+
+.auth-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background:#18191A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.auth-form-container {
+  background: #222;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  width: 370px;
+  max-width: 95vw;
+  margin: auto;
+}
+
+.auth-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 36px;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.tab-switcher {
+  display: flex;
+  margin-bottom: 28px;
+  background: #18191A;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.7rem 0;
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  border: none;
+  transition: background 0.2s;
+}
+
+.tab-button.active {
+  background: #fff;
+  color: #18191A;
+}
+
+.tab-button.login {
+  border-radius: 18px 0 0 18px;
+}
+
+.tab-button.signup {
+  border-radius: 0 18px 18px 0;
+}
+
+.auth-input {
+  width: 91%;
+  margin-bottom: 16px;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #444;
+  font-size: 16px;
+  background: #18191A;
+  color: #fff;
+}
+
+.forgot-password {
+  margin-bottom: 12px;
+}
+
+.forgot-password-link {
+  color: #fff;
+  font-size: 14px;
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.error-message {
+  color: #e53935;
+  margin-bottom: 12px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.submit-button {
+  width: 100%;
+  background: #fff;
+  color: #18191A;
+  font-weight: 700;
+  font-size: 20px;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 0;
+  margin-top: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.submit-button.login {
+  margin-bottom: 10px;
+}
+
+.signup-prompt {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.signup-link {
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+}

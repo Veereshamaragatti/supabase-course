@@ -1,72 +1,154 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { supabase } from "../supabase-client";
+import "./auth.css";
 
 export const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setError("");
+    setSuccessMessage("");
     if (isSignUp) {
+      if (password !== confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
       });
       if (signUpError) {
-        console.error("Error signing up:", signUpError.message);
+        setError(signUpError.message);
         return;
       }
+      // Show success message for email verification
+      setSuccessMessage("Please check your email and click the verification link to complete your signup.");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } else {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (signInError) {
-        console.error("Error signing up:", signInError.message);
+        setError(signInError.message);
         return;
       }
     }
   };
-
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto", padding: "1rem" }}>
-      <h2>{isSignUp ? "Sign Up" : "Sign In"}</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
-        />
-        <button
-          type="submit"
-          style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
-        >
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </button>
-      </form>
-      <button
-        onClick={() => {
-          setIsSignUp(!isSignUp);
-        }}
-        style={{ padding: "0.5rem 1rem" }}
-      >
-        {isSignUp ? "Switch to Sign In" : "Switch to Sign Up"}
-      </button>
+    <div className="auth-container">
+      <div className="auth-form-container">        <h2 className="auth-title">
+          {isSignUp ? "Signup Form" : "Login Form"}
+        </h2>
+        {/* Tab Switcher */}        <div className="tab-switcher">          <button
+            type="button"            onClick={() => {
+              setIsSignUp(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+              setError("");
+              setSuccessMessage("");
+            }}
+            className={`tab-button login ${!isSignUp ? 'active' : ''}`}
+          >
+            Login
+          </button>          <button
+            type="button"
+            onClick={() => {
+              setIsSignUp(true);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+              setError("");
+              setSuccessMessage("");
+            }}
+            className={`tab-button signup ${isSignUp ? 'active' : ''}`}
+          >
+            Signup
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+            className="auth-input"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+            className="auth-input"
+            required
+          />          {isSignUp && (
+            <input
+              type="password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setConfirmPassword(e.target.value)
+              }
+              className="auth-input"
+              required
+            />
+          )}          {!isSignUp && (
+            <div className="forgot-password">
+              <a href="#" className="forgot-password-link">
+                Forgot password?
+              </a>
+            </div>
+          )}   
+           {/* {!isSignUp && (
+            <div className="forgot-password">
+              <a href="#" className="forgot-password-link">
+                Forgot password?
+              </a>
+            </div>
+          )}      */}          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+          {successMessage && (
+            <div className="success-message">
+              {successMessage}
+            </div>
+          )}<button
+            type="submit"
+            className={`submit-button ${!isSignUp ? 'login' : ''}`}
+          >
+            {isSignUp ? "Signup" : "Login"}
+          </button>
+        </form>        {/* Bottom links */}        {!isSignUp && (
+          <div className="signup-prompt">
+            Not a member?{" "}
+            <span 
+              className="signup-link"
+              onClick={() => {
+                setIsSignUp(true);
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+                setError("");
+              }}
+            >
+              Signup now
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
